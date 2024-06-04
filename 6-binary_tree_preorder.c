@@ -1,8 +1,8 @@
 #include "binary_trees.h"
 /**
  * binary_tree_preorder - Goes thru a binary tree usin pre-order traversal
- * @tree: D root node of tree to traverse
- * @func: Function to call 4 each node
+ * @tree: D rut node of tree to traverse
+ * @func: Func to cal 4 each node
  */
 void binary_tree_preorder(const binary_tree_t *tree, void (*func)(int))
 {
