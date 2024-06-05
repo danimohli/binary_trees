@@ -9,16 +9,12 @@
 binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 		const binary_tree_t *second)
 {
-	const binary_tree_t *a, *b;
+	const binary_tree_t *a = first, *b = second;
 
 	if (first == NULL || second == NULL)
 		return (NULL);
 
-	if (first == second)
-		return ((binary_tree_t *)first);
-
-	a = first, b = second;
-
+	/* Move up the tree until we find a common ancestor */
 	while (a != b)
 	{
 		a = a->parent == NULL ? second : a->parent;
