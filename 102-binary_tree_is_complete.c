@@ -1,8 +1,8 @@
 #include "binary_trees.h"
 /**
- * enqueue - adds new node to the end of queue
- * @head: pointer to the head of queue
- * @node: Binary tree node to be added to queue
+ * enqueue - node to the end of queue
+ * @head: Pointer to the head of queue
+ * @node: binary tree node to be added to queue
  * Return: new node or NULL
  */
 queue_node_t *enqueue(queue_node_t **head, const binary_tree_t *node)
@@ -30,7 +30,7 @@ queue_node_t *enqueue(queue_node_t **head, const binary_tree_t *node)
 /**
  * dequeue - removes first node from queue
  * @head: pointer to the head of queue
- * Return: removed node or NULL
+ * Return: removed node
  */
 const binary_tree_t *dequeue(queue_node_t **head)
 {
@@ -49,8 +49,24 @@ const binary_tree_t *dequeue(queue_node_t **head)
 }
 
 /**
+ * free_queue - frees nodes in queue
+ * @head: point to the head of queue
+ */
+void free_queue(queue_node_t **head)
+{
+	queue_node_t *temp;
+
+	while (*head != NULL)
+	{
+		temp = *head;
+		*head = (*head)->next;
+		free(temp);
+	}
+}
+
+/**
  * binary_tree_is_complete - checks if binary tree is complete
- * @tree: Root node of the tree to check
+ * @tree: root node of the tree to check
  * Return: 1 if tree is complete, else 0
  */
 int binary_tree_is_complete(const binary_tree_t *tree)
@@ -61,15 +77,16 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 
 	if (!tree)
 		return (0);
-
 	enqueue(&queue, tree);
-
 	while ((current = dequeue(&queue)) != NULL)
 	{
 		if (current->left)
 		{
 			if (flag)
+			{
+				free_queue(&queue);
 				return (0);
+			}
 			enqueue(&queue, current->left);
 		}
 		else
@@ -78,11 +95,15 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 		if (current->right)
 		{
 			if (flag)
+			{
+				free_queue(&queue);
 				return (0);
+			}
 			enqueue(&queue, current->right);
 		}
 		else
 			flag = 1;
 	}
+	free_queue(&queue);
 	return (1);
 }
