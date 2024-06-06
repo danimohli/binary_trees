@@ -55,6 +55,7 @@ avl_t *bst_insert(avl_t **tree, int value)
 		*tree = binary_tree_node(NULL, value);
 		return (*tree);
 	}
+
 	node = *tree;
 	if (value < node->n)
 	{
@@ -87,22 +88,21 @@ avl_t *bst_insert(avl_t **tree, int value)
  */
 avl_t *avl_insert(avl_t **tree, int value)
 {
-	avl_t *node;
+	avl_t *node, *root;
+
+	if (tree == NULL)
+		return (NULL);
 
 	node = bst_insert(tree, value);
 	if (node == NULL)
 		return (NULL);
 
-	while (node->parent)
+	root = node;
+	while (root->parent != NULL)
 	{
-		node = node->parent;
-		node = rebalance(node);
+		root = root->parent;
+		root = rebalance(root);
 	}
-
-	while (node->parent)
-		node = node->parent;
-
-	*tree = node;
-
+	*tree = root;
 	return (node);
 }
