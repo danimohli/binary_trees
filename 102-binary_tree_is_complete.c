@@ -44,7 +44,7 @@ const binary_tree_t *dequeue(queue_node_t **head)
 	*head = (*head)->next;
 	node = temp->node;
 	free(temp);
-	
+
 	return (node);
 }
 
