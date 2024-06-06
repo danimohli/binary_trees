@@ -40,6 +40,33 @@ int is_bst(const binary_tree_t *tree, const binary_tree_t *min,
 
 	return (is_bst(tree->left, min, tree) && is_bst(tree->right, tree, max));
 }
+/**
+ * is_avl_rec - Recursively checks if a binary tree is a valid
+ * @tree: Root node of the tree to check
+ * @height: Ptr to store the height of tree
+ * Return: 1 or 0
+ */
+int is_avl_rec(const binary_tree_t *tree, int *height)
+{
+	int left_height = 0, right_height = 0;
+
+	if (tree == NULL)
+	{
+		*height = 0;
+		return (1);
+	}
+
+	if (!is_avl_rec(tree->left, &left_height) ||
+			!is_avl_rec(tree->right, &right_height))
+		return (0);
+
+	*height = 1 + max(left_height, right_height);
+
+	if (abs(left_height - right_height) > 1)
+		return (0);
+
+	return (1);
+}
 
 /**
  * binary_tree_is_avl - Checks if a binary tree is a valid AVL Tree
@@ -48,7 +75,7 @@ int is_bst(const binary_tree_t *tree, const binary_tree_t *min,
  */
 int binary_tree_is_avl(const binary_tree_t *tree)
 {
-	int left_height, right_height;
+	int height = 0;
 
 	if (tree == NULL)
 		return (0);
@@ -56,11 +83,5 @@ int binary_tree_is_avl(const binary_tree_t *tree)
 	if (!is_bst(tree, NULL, NULL))
 		return (0);
 
-	left_height = height(tree->left);
-	right_height = height(tree->right);
-
-	if (abs(left_height - right_height) > 1)
-		return (0);
-
-	return (binary_tree_is_avl(tree->left) && binary_tree_is_avl(tree->right));
+	return (is_avl_rec(tree, &height));
 }
