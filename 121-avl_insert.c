@@ -103,6 +103,8 @@ avl_t *avl_insert(avl_t **tree, int value)
 		root = root->parent;
 		root = rebalance(root);
 	}
+
 	*tree = root;
+
 	return (node);
 }
